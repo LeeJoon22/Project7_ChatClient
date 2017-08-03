@@ -13,13 +13,14 @@ public class Client implements Observer {
 	String in = "", out = "";
 	Scanner pw;
 
+	public String m = "";
 
 	public Client() {
 		try {
 			// System.out.println("Enter Server Password: ");		Figure out password configuration
 			pw = new Scanner(System.in);
 			socket = new Socket("localhost", 5000);
-			new ClientThread(socket).start();
+			new ClientThread(socket, this).start();
 		} catch (Exception e) {
 		}
 	}

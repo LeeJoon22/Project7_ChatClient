@@ -38,7 +38,7 @@ public class ServerMain extends Application{
 	
 	public static void updateText(String s){
 		t.setText(t.getText() + "\n" + s);
-		System.out.println("Got there");
+		System.out.println("Manual updateText : " + s);
 	}
 }
 

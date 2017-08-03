@@ -9,9 +9,11 @@ public class ClientThread extends Thread implements Runnable{
 	BufferedReader br;
 	Socket socket;
 	String out;
+	Client c;
 
-	public ClientThread(Socket s){
+	public ClientThread(Socket s, Client c){
 		socket = s;
+		this.c = c;
 	}
 
 	public void run() {
@@ -25,10 +27,10 @@ public class ClientThread extends Thread implements Runnable{
 				//System.out.println("Client: " + out);
 			} while (!out.equals("Quit"));*/
 			while(true){
-				if(ClientMain.message.length() > 0){
+				if(temp.message.length() > 0){
 					pr = new PrintWriter(socket.getOutputStream(), true);
-					pr.println(ClientMain.message);
-					ClientMain.message = "";
+					pr.println(temp.message);
+					temp.message = "";
 				}
 			}
 		} catch (Exception e) {
