@@ -1,5 +1,13 @@
 package assignment7;
 
+/*
+ * Project 7 : Socket Programming
+ * John Lee jol322
+ * Benjamin Thorell blt895
+ * 
+ * Slip Days Used: 2 (using one here)
+ */
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
