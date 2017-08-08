@@ -1,45 +1,64 @@
 package assignment7;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import javafx.beans.value.ObservableValue;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.*;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class ServerMain extends Application{
-			
-	static Text t;
-	
-	public static void main(String[] args){
+public class ServerMain extends Application {
+
+	public static void main(String[] args) {
 		new Thread(() -> launch(args)).start();
-		new Thread(() -> new Server()).start();
+		new Thread(() -> {
+			try{		
+				new ServerObservable().setUpNetworking();
+			}catch(Exception e){	
+				e.printStackTrace();
+			}
+		}).start();
 	}
 
+	static TextArea text;
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		GridPane gp = new GridPane();
-		t = new Text();
+
+		//Displays Welcome
+		text = new TextArea("Greetings, Server!");
+		text.setStyle("-fx-font: bold italic 10pt 'Castellar'; -fx-text-fill: black;");
+
+		HBox container = new HBox();
+		container.setAlignment(Pos.CENTER);
+		container.setPrefHeight(240);
+		container.setPrefWidth(400);
+		container.setPadding(new Insets(20, 5, 30, 5));
+		VBox.setVgrow(text, Priority.ALWAYS);
+		HBox.setHgrow(text, Priority.ALWAYS);
+
+		container.getChildren().add(text);
+
+		GridPane pane = new GridPane();
+		pane.add(container, 0, 0);
+		Scene serverScene = new Scene(pane);
+
+		serverScene.heightProperty().addListener((ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) ->
+			container.setPrefHeight((double)newSceneHeight));
 		
-		Button quit = new Button("Quit");
-		quit.setOnAction((ActionEvent event) -> System.exit(0));
-		quit.setTextFill(javafx.scene.paint.Color.RED);
-		
-		gp.add(t, 0, 0);
-		gp.add(quit, 0, 1);
-		
+		serverScene.widthProperty().addListener((ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) ->
+			container.setPrefWidth((double)newSceneWidth));
+
+		primaryStage.setScene(serverScene);
 		primaryStage.setTitle("Server");
-		primaryStage.setScene(new Scene(gp, 350, 400));
 		primaryStage.show();
+
+		primaryStage.setOnCloseRequest(e -> System.exit(0));
 	}
-	
-	public static void updateText(String s){
-		t.setText(t.getText() + "\n" + s);
-		System.out.println("Manual updateText : " + s);
+
+	public static void print(String s){
+		text.appendText("\n" + s);
 	}
+
 }
-
-
